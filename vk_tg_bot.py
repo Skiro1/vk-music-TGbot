@@ -50,6 +50,7 @@ def delete_vk_message(token: str, msg_id: int, peer_id: int):
                    peer_id=peer_id,
                    cmids=cmid)
                 return
+
         # Fallback
         vk("messages.delete", token, message_ids=msg_id, peer_id=peer_id)
     except Exception as e:
@@ -58,7 +59,6 @@ def delete_vk_message(token: str, msg_id: int, peer_id: int):
 def parse_vk_audio_url(text: str):
     match = re.search(r"audio(-?\d+)_(\d+)", text)
     return (int(match.group(1)), int(match.group(2))) if match else None
-
 
 # Загрузка
 def sanitize(name: str) -> str:
@@ -135,8 +135,8 @@ def tg_get_updates(tg_token: str, offset: int) -> list:
 def process_vk_audio(audio: dict, tg_token: str, tg_chat_id, vk_token: str, vk_msg_id: int, vk_peer_id: int):
     """Скачивает трек и отправляет в Telegram."""
     artist = audio.get("artist", "Unknown")
-    title  = audio.get("title",  "Unknown")
-    url    = audio.get("url",    "")
+    title = audio.get("title",  "Unknown")
+    url = audio.get("url",    "")
 
     if not url:
         tg_send(tg_token, tg_chat_id, f"Нет ссылки на трек: {artist} — {title}")
@@ -219,7 +219,7 @@ def run(vk_token: str, tg_token: str):
                 tg_offset = update["update_id"] + 1
                 msg = update.get("message", {})
                 chat_id = msg.get("chat", {}).get("id")
-                text    = msg.get("text", "").strip()
+                text = msg.get("text", "").strip()
                 if not chat_id or not text:
                     continue
 
