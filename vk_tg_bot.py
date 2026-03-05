@@ -111,7 +111,6 @@ def download_audio(audio_url: str, out_path: str) -> bool:
     return os.path.exists(out_path)
 
 # Telegram API
-
 def tg(method: str, tg_token: str, **kwargs):
     resp = requests.post(
         f"https://api.telegram.org/bot{tg_token}/{method}",
@@ -131,6 +130,7 @@ def tg_get_updates(tg_token: str, offset: int) -> list:
     data = tg("getUpdates", tg_token,
               json={"offset": offset, "timeout": 25, "allowed_updates": ["message"]})
     return data.get("result", []) if data.get("ok") else []
+
 # Основная логика
 def process_vk_audio(audio: dict, tg_token: str, tg_chat_id, vk_token: str, vk_msg_id: int, vk_peer_id: int):
     """Скачивает трек и отправляет в Telegram."""
@@ -167,6 +167,7 @@ def run(vk_token: str, tg_token: str):
     self_id = get_self_id(vk_token)
     pending = {}
     print("Бот запущен. Ctrl+C для остановки")
+
     # VK Longpoll в фоне
     def vk_longpoll():
         lp = vk("messages.getLongPollServer", vk_token, lp_version=3, need_pts=0)
